@@ -1,0 +1,29 @@
+{
+“version”: 2,
+“builds”: [
+{
+“src”: “api/**/*.js”,
+“use”: “@vercel/node”
+}
+],
+“routes”: [
+{
+“src”: “/api/(.*)”,
+“dest”: “/api/$1”
+}
+],
+“env”: {
+“MPESA_CONSUMER_KEY”: “@mpesa_consumer_key”,
+“MPESA_CONSUMER_SECRET”: “@mpesa_consumer_secret”,
+“MPESA_SHORTCODE”: “@mpesa_shortcode”,
+“MPESA_PASSKEY”: “@mpesa_passkey”,
+“MPESA_ENVIRONMENT”: “sandbox”,
+“NODE_ENV”: “production”
+},
+“functions”: {
+“api/*.js”: {
+“memory”: 1024,
+“maxDuration”: 30
+}
+}
+}

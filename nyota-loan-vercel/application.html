@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Loan | Nyota Youth Empowerment</title>
+
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/icon.192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/icon.512.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="js/security.js"></script>
+
+    <style>
+        :root {
+            --primary: #BB0000;
+            --primary-light: #DD0000;
+            --secondary: #006600;
+            --white: #ffffff;
+            --black: #000000;
+            --gray: #6c757d;
+            --light-gray: #f8f9fa;
+            --gradient: linear-gradient(135deg, #000000 0%, #BB0000 50%, #006600 100%);
+            --border-radius: 16px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f0f2f5;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(187, 0, 0, 0.03) 0%, transparent 20%),
+                radial-gradient(circle at 80% 80%, rgba(0, 102, 0, 0.03) 0%, transparent 20%);
+            color: var(--black);
+            padding: 20px 16px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-card::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--gradient);
+        }
+
+        .welcome-text {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #4b5563;
+        }
+
+        .user-name {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .loan-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .card-title {
+            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 24px;
+            color: var(--black);
+            font-weight: 700;
+        }
+
+        .loan-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .loan-option {
+            background: #f8fafc;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .loan-option:hover {
+            transform: translateY(-2px);
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-color: rgba(187, 0, 0, 0.1);
+        }
+
+        .loan-option.selected {
+            border-color: var(--primary);
+            background-color: #fff1f2;
+            box-shadow: 0 4px 12px rgba(187, 0, 0, 0.15);
+        }
+
+        .loan-option.selected .loan-amount {
+            transform: scale(1.05);
+        }
+
+        .loan-amount {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--black);
+            margin-bottom: 4px;
+            transition: transform 0.2s;
+        }
+
+        .processing-fee {
+            font-size: 0.8rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        .btn-apply {
+            width: 100%;
+            padding: 18px;
+            background: var(--gradient);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 24px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(187, 0, 0, 0.2);
+        }
+
+        .btn-apply:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(187, 0, 0, 0.3);
+        }
+
+        .btn-apply:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none;
+            background: #ccc;
+        }
+
+        .btn-apply:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 12px;
+            display: none;
+            background: #fef2f2;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #fee2e2;
+        }
+
+        .app-promo {
+            text-align: center;
+            margin-top: 24px;
+            display: none;
+            background: var(--white);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .app-promo-text {
+            font-size: 0.95rem;
+            color: var(--black);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .btn-download {
+            background: var(--black);
+            border: 1px solid var(--black);
+            color: var(--white);
+            border-radius: 50px;
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 30px;
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        /* Ultra-Mobile Optimized Payment Confirmation Modal */
+        .mobile-confirm-modal {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            width: 94vw;
+            max-width: 360px;
+            margin: 0 auto;
+        }
+
+        .mobile-confirm-header {
+            background: var(--gradient);
+            padding: 24px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .mobile-confirm-icon {
+            font-size: 40px;
+            color: white;
+            margin-bottom: 12px;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-confirm-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .mobile-confirm-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.95;
+        }
+
+        .mobile-confirm-body {
+            padding: 24px;
+        }
+
+        .mobile-loan-summary {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .mobile-summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .mobile-summary-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .mobile-summary-label {
+            color: #64748b;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .mobile-summary-value {
+            color: var(--black);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .mobile-phone-display {
+            background: rgba(187, 0, 0, 0.05);
+            padding: 14px;
+            border-radius: 12px;
+            margin: 16px 0;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+            border: 1px solid rgba(187, 0, 0, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .mobile-confirm-footer {
+            padding: 0 24px 24px;
+            text-align: center;
+        }
+
+        .mobile-confirm-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .mobile-confirm-btn {
+            padding: 16px;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .mobile-confirm-btn:active {
+            transform: scale(0.98);
+        }
+
+        .mobile-cancel-btn {
+            padding: 16px;
+            background: #f1f5f9;
+            color: #475569;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .mobile-cancel-btn:active {
+            background: #e2e8f0;
+        }
+
+        /* STK Push Modal Styles - Ultra Mobile Optimized */
+        .mobile-stk-modal {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            width: 94vw;
+            max-width: 360px;
+            margin: 0 auto;
+        }
+
+        .mobile-stk-header {
+            background: var(--gradient);
+            padding: 24px;
+            text-align: center;
+            color: white;
+        }
+
+        .mobile-stk-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+            color: white;
+        }
+
+        .mobile-stk-body {
+            padding: 24px;
+            text-align: center;
+        }
+
+        .mobile-stk-amount {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 12px 0;
+        }
+
+        .mobile-stk-phone {
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 12px;
+            margin: 16px 0;
+            font-weight: 700;
+            color: var(--black);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 1rem;
+        }
+
+        .mobile-stk-instructions {
+            background: #f0fdf4;
+            padding: 16px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: left;
+            border-left: 4px solid #16a34a;
+        }
+
+        .mobile-stk-instructions ol {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+
+        .mobile-stk-instructions li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+            font-size: 0.9rem;
+            color: #166534;
+        }
+
+        .mobile-stk-footer {
+            background: #fff;
+            padding: 0 24px 24px;
+            text-align: center;
+        }
+
+        /* SweetAlert2 Modal Centering */
+        .swal2-popup {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
+            margin: 0 !important;
+            /* background: transparent !important;  <-- Removed global transparency */
+            /* box-shadow: none !important;         <-- Removed global no-shadow */
+        }
+
+        /* Specific override for custom custom-rendered modals */
+        .swal2-popup.mobile-confirm-modal,
+        .swal2-popup.mobile-stk-modal {
+            background: transparent !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+        }
+
+        .swal2-container {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding: 0 !important;
+            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.6) !important;
+        }
+
+        /* Responsive adjustments for very narrow screens */
+        @media (max-width: 380px) {
+            .loan-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .loan-option {
+                padding: 14px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .loan-amount {
+                margin-bottom: 0;
+                font-size: 1rem;
+            }
+
+            .processing-fee {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Spinner for polling */
+        .spinner {
+            display: none;
+            width: 48px;
+            height: 48px;
+            margin: 20px auto;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="welcome-card">
+            <p class="welcome-text">
+                Hi <span class="user-name" id="user-name"></span>, you qualify for these loan options based on your
+                <strong>M-Pesa records</strong> (2-month term at 10% interest).
+            </p>
+        </div>
+
+        <div class="loan-card">
+            <h3 class="card-title">Select Your Loan Amount</h3>
+            <div class="loan-grid">
+                <div class="loan-option" onclick="selectLoanOption(this, 5500, 100)">
+                    <div class="loan-amount">Ksh 5,500</div>
+                    <div class="processing-fee">Fee: Ksh 100</div>
+                </div>
+                <div class="loan-option" onclick="selectLoanOption(this, 6800, 130)">
+                    <div class="loan-amount">Ksh 6,800</div>
+                    <div class="processing-fee">Fee: Ksh 130</div>
+                </div>
+                <div class="loan-option" onclick="selectLoanOption(this, 7800, 170)">
+                    <div class="loan-amount">Ksh 7,800</div>
+                    <div class="processing-fee">Fee: Ksh 170</div>
+                </div>
+                <div class="loan-option" onclick="selectLoanOption(this, 9800, 190)">
+                    <div class="loan-amount">Ksh 9,800</div>
+                    <div class="processing-fee">Fee: Ksh 190</div>
+                </div>
+                <div class="loan-option" onclick="selectLoanOption(this, 11200, 230)">
+                    <div class="loan-amount">Ksh 11,200</div>
+                    <div class="processing-fee">Fee: Ksh 230</div>
+                </div>
+                <div class="loan-option" onclick="selectLoanOption(this, 16800, 250)">
+                    <div class="loan-amount">Ksh 16,800</div>
+                    <div class="processing-fee">Fee: Ksh 250</div>
+                </div>
+                <div class="loan-option" onclick="selectLoanOption(this, 21200, 270)">
+                    <div class="loan-amount">Ksh 21,200</div>
+                    <div class="processing-fee">Fee: Ksh 270</div>
+                </div>
+                <div class="loan-option" onclick="selectLoanOption(this, 25600, 400)">
+                    <div class="loan-amount">Ksh 25,600</div>
+                    <div class="processing-fee">Fee: Ksh 400</div>
+                </div>
+                <div class="loan-option" onclick="selectLoanOption(this, 30000, 470)">
+                    <div class="loan-amount">Ksh 30,000</div>
+                    <div class="processing-fee">Fee: Ksh 470</div>
+                </div>
+                <div class="loan-option" onclick="selectLoanOption(this, 35400, 590)">
+                    <div class="loan-amount">Ksh 35,400</div>
+                    <div class="processing-fee">Fee: Ksh 590</div>
+                </div>
+                <div class="loan-option" onclick="selectLoanOption(this, 39800, 730)">
+                    <div class="loan-amount">Ksh 39,800</div>
+                    <div class="processing-fee">Fee: Ksh 730</div>
+                </div>
+                <div class="loan-option" onclick="selectLoanOption(this, 44200, 1010)">
+                    <div class="loan-amount">Ksh 44,200</div>
+                    <div class="processing-fee">Fee: Ksh 1010</div>
+                </div>
+                <div class="loan-option" onclick="selectLoanOption(this, 48600, 1600)">
+                    <div class="loan-amount">Ksh 48,600</div>
+                    <div class="processing-fee">Fee: Ksh 1600</div>
+                </div>
+                <div class="loan-option" onclick="selectLoanOption(this, 60600, 2050)">
+                    <div class="loan-amount">Ksh 60,600</div>
+                    <div class="processing-fee">Fee: Ksh 2050</div>
+                </div>
+            </div>
+        </div>
+
+        <button id="apply-btn" class="btn-apply" disabled>
+            Get Loan Now <i class="fas fa-arrow-right"></i>
+        </button>
+        <div id="error-message" class="error-message">Please select a loan amount to continue</div>
+
+        <div class="app-promo" id="app-promo">
+            <p class="app-promo-text">For loans up to Ksh 80,000, download our app:</p>
+            <a href="https://play.google.com/store/apps/details?id=com.punksmoothheat.DooChapChap" target="_blank"
+                class="btn-download">
+                <i class="fab fa-google-play"></i> Download App
+            </a>
+        </div>
+
+        <a href="eligibility.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        // Load user data from SessionStorage
+        const userData = JSON.parse(sessionStorage.getItem('myLoan') || '{}');
+
+        // Redirect if no phone number is found (prevents direct access)
+        if (!userData.phone_number) {
+            window.location.href = 'eligibility.html';
+        }
+
+        document.getElementById('user-name').textContent = userData.name || 'Customer';
+
+        let selectedLoan = null;
+
+        // Helper to format phone number to 254XXXXXXXXX
+        function formatPhoneNumber(phone) {
+            let p = phone.toString().replace(/\D/g, ''); // Remove non-digits
+            if (p.startsWith('0')) {
+                return '254' + p.substring(1);
+            }
+            if (p.startsWith('7') || p.startsWith('1')) {
+                return '254' + p;
+            }
+            if (p.startsWith('254')) {
+                return p;
+            }
+            return p;
+        }
+
+        // Handle Loan Selection
+        function selectLoanOption(element, amount, fee) {
+            // Remove "selected" class from all
+            document.querySelectorAll('.loan-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Add "selected" class to clicked element
+            element.classList.add('selected');
+
+            // Update state
+            selectedLoan = { amount, fee };
+
+            // Enable button and hide errors
+            document.getElementById('apply-btn').disabled = false;
+            document.getElementById('error-message').style.display = 'none';
+
+            // Update Session Storage
+            userData.loan_amount = amount;
+            userData.processing_fee = fee;
+            sessionStorage.setItem('myLoan', JSON.stringify(userData));
+        }
+
+        // Handle Apply Button Click
+        document.getElementById('apply-btn').addEventListener('click', async function () {
+            if (!selectedLoan) {
+                document.getElementById('error-message').style.display = 'block';
+                return;
+            }
+
+            // 1. Show Confirmation Modal
+            const { value: confirmed } = await Swal.fire({
+                title: '<div class="mobile-confirm-header">' +
+                    '<div class="mobile-confirm-icon"><i class="fas fa-check-circle"></i></div>' +
+                    '<div class="mobile-confirm-title">Confirm Loan</div>' +
+                    '<div class="mobile-confirm-subtitle">Review details before payment</div>' +
+                    '</div>',
+                html: `
+                    <div class="mobile-confirm-modal">
+                        <div class="mobile-confirm-body">
+                            <div class="mobile-loan-summary">
+                                <div class="mobile-summary-item">
+                                    <span class="mobile-summary-label">Loan Amount:</span>
+                                    <span class="mobile-summary-value">Ksh ${selectedLoan.amount.toLocaleString()}</span>
+                                </div>
+                                <div class="mobile-summary-item">
+                                    <span class="mobile-summary-label">Processing Fee:</span>
+                                    <span class="mobile-summary-value">Ksh ${selectedLoan.fee}</span>
+                                </div>
+                                <div class="mobile-summary-item">
+                                    <span class="mobile-summary-label">Total Repayment:</span>
+                                    <span class="mobile-summary-value">Ksh ${(selectedLoan.amount * 1.1).toLocaleString()}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mobile-phone-display">
+                                <i class="fas fa-mobile-alt"></i> ${userData.phone_number}
+                            </div>
+                        </div>
+                        
+                        <div class="mobile-confirm-footer">
+                            <div class="mobile-confirm-buttons">
+                                <button class="mobile-confirm-btn" onclick="Swal.clickConfirm()">
+                                    <i class="fas fa-check-circle"></i> Proceed
+                                </button>
+                                <button class="mobile-cancel-btn" onclick="Swal.close()">
+                                    <i class="fas fa-times"></i> Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                showConfirmButton: false,
+                showCancelButton: false,
+                customClass: {
+                    popup: 'mobile-confirm-modal'
+                }
+            });
+
+            // 2. Process Payment if Confirmed
+            if (confirmed) {
+                Swal.fire({
+                    title: 'Initiating Payment',
+                    html: 'Connecting to M-Pesa...',
+                    allowOutsideClick: false,
+                    didOpen: () => Swal.showLoading(),
+                    customClass: {
+                        popup: 'swal2-center'
+                    }
+                });
+
+                try {
+                    const formattedPhone = formatPhoneNumber(userData.phone_number);
+
+                    // Call the PHP Backend
+                    const response = await fetch('/api/stk-initiate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            phone: formattedPhone,
+                            amount: selectedLoan.fee
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        const checkoutRequestId = result.data.CheckoutRequestID;
+
+                        // 3. Show Polling UI
+                        Swal.fire({
+                            title: '<div class="mobile-stk-header">Processing Payment</div>',
+                            html: `
+                                <div class="mobile-stk-modal">
+                                    <div class="mobile-stk-body">
+                                        <div class="spinner" style="display:block; margin: 0 auto 15px;"></div>
+                                        <h3>Check Your Phone</h3>
+                                        <p>Enter M-Pesa PIN for <strong>Ksh ${selectedLoan.fee}</strong></p>
+                                        <div class="mobile-stk-phone">${formattedPhone}</div>
+                                        <p style="font-size:0.8rem; color:#666; margin-top:10px;">Waiting for confirmation...</p>
+                                    </div>
+                                </div>
+                            `,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            customClass: {
+                                popup: 'mobile-stk-modal'
+                            }
+                        });
+
+                        // 4. Poll for Status
+                        let attempts = 0;
+                        const maxAttempts = 20; // 20 * 3s = 60 seconds timeout
+
+                        const pollInterval = setInterval(async () => {
+                            attempts++;
+                            try {
+                                const statusResp = await fetch('/api/stk-status', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ checkoutRequestId })
+                                });
+                                const statusResult = await statusResp.json();
+
+                                if (statusResult.status === 'COMPLETED') {
+                                    clearInterval(pollInterval);
+
+                                    // Set secure flag
+                                    sessionStorage.setItem('payment_status', 'completed');
+                                    sessionStorage.setItem('payment_time', new Date().toISOString());
+
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Payment Successful!',
+                                        text: 'Redirecting to your dashboard...',
+                                        timer: 2000,
+                                        showConfirmButton: false
+                                    }).then(() => {
+                                        window.location.href = 'dash.html';
+                                    });
+                                } else if (statusResult.status === 'FAILED') {
+                                    clearInterval(pollInterval);
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Payment Failed',
+                                        text: statusResult.message || 'The transaction was not completed.'
+                                    });
+                                } else {
+                                    // Still PENDING
+                                    if (attempts >= maxAttempts) {
+                                        clearInterval(pollInterval);
+                                        Swal.fire({
+                                            icon: 'warning',
+                                            title: 'Timeout',
+                                            text: 'We could not verify your payment in time. Please check your SMS.'
+                                        });
+                                    }
+                                }
+                            } catch (e) {
+                                console.error('Polling error', e);
+                                // Don't stop polling on network error, just wait for next tick
+                            }
+                        }, 3000);
+
+                    } else {
+                        throw new Error(result.message || 'Failed to initiate payment');
+                    }
+                } catch (error) {
+                    console.error('Payment error:', error);
+                    Swal.fire({
+                        title: 'Payment Failed',
+                        html: `
+                            <p style="font-size: 0.9rem;">${error.message || 'Unable to process payment. Please try again.'}</p>
+                            <p style="font-size: 0.8rem; color: #666; margin-top: 10px;">
+                                Ensure your phone number is correct.
+                            </p>
+                        `,
+                        icon: 'error',
+                        confirmButtonText: 'Try Again',
+                        confirmButtonColor: '#4361ee',
+                        customClass: {
+                            popup: 'swal2-center'
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

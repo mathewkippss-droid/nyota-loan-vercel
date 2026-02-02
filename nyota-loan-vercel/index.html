@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nyota Youth Empowerment - Home</title>
+    
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/icon.192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/icon.512.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #BB0000;
+            --secondary: #006600; 
+            --black: #000000;
+            --white: #ffffff;
+            --gray: #6c757d;
+            --gradient: linear-gradient(135deg, #000000 0%, #BB0000 50%, #006600 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            background: #f0f2f5;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(187, 0, 0, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 102, 0, 0.05) 0%, transparent 20%);
+        }
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            color: var(--black);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--gray);
+            margin-bottom: 40px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 20px 50px;
+            background: var(--gradient);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(187, 0, 0, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(187, 0, 0, 0.4);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+        
+        .feature {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature i {
+            font-size: 3rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+        
+        .feature h3 {
+            font-size: 1.3rem;
+            color: var(--black);
+            margin-bottom: 10px;
+        }
+        
+        .feature p {
+            color: var(--gray);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="hero-content">
+            <div class="logo">Nyota Youth Empowerment</div>
+            <h1>Get Quick Loans from Ksh 1,500 to 60,000</h1>
+            <p class="subtitle">Fast approval, no paperwork, no guarantors needed</p>
+            
+            <a href="eligibility.html" class="cta-button">
+                Check Your Eligibility <i class="fas fa-arrow-right"></i>
+            </a>
+            
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Instant Approval</h3>
+                    <p>Get approved in minutes, not days</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>No CRB Check</h3>
+                    <p>Your credit history won't hold you back</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>100% Mobile</h3>
+                    <p>Apply and receive funds via M-Pesa</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
